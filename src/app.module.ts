@@ -14,11 +14,11 @@ import { LoggerMiddleware } from './logger/logger.middleware';
       isGlobal: true,
       envFilePath: '.env',
     }),
-    AuthModule,
-    PassportModule,
+    AuthModule, // เรียกใช้ AuthModule
+    PassportModule, // เรียกใช้ PassportModule
   ],
-  controllers: [AppController],
-  providers: [AppService, JwtStrategy],
+  controllers: [AppController], // เรียกใช้ AppController
+  providers: [AppService, JwtStrategy], // เรียกใช้ AppService และ JwtStrategy
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
