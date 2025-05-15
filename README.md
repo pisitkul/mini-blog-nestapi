@@ -1,98 +1,458 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# mini-blog-nestapi
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A beginner-friendly NestJS project for learning and experimenting with Nest framework.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+โปรเจกต์ตัวอย่างสำหรับการเรียนรู้และทดลองใช้งาน NestJS ครั้งแรก  
+เน้นการสร้าง API แบบง่าย ๆ พร้อมแนะนำพื้นฐานสำคัญของ NestJS
 
-## Description
+## Project overview
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- สร้าง RESTful API สำหรับจัดการบล็อกอย่างง่าย
+- ใช้ In-memory database เพื่อความสะดวกในการเรียนรู้
+- ประกอบด้วยโมดูล Posts และ Users
+- มีระบบ Authentication เบื้องต้นด้วย JWT
+- มีการใช้ Validation, Guards, และ Interceptors
 
-## Project setup
+## วิธีการติดตั้งและเริ่มใช้งาน NestJS
 
 ```bash
-$ pnpm install
+# ติดตั้ง NestJS CLI
+npm i -g @nestjs/cli
+
+# สร้างโปรเจกต์ใหม่
+nest new mini-blog-nestapi
+
+# สร้าง module ใหม่
+nest g module users
+
+# สร้าง controller ใหม่
+nest g controller users
+
+# สร้าง service ใหม่
+nest g service users
+
+# สร้าง resource ครบชุด (CRUD)
+nest g resource posts
 ```
 
-## Compile and run the project
+## Run project
 
 ```bash
-# development
-$ pnpm run start
+# เริ่มโหมดพัฒนา (watch mode)
+pnpm run start:dev
 
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+# เริ่มโหมด production
+pnpm run start:prod
 ```
 
-## Run tests
+## โครงสร้างและพื้นฐานสำคัญของ NestJS ที่ควรรู้
 
-```bash
-# unit tests
-$ pnpm run test
+### 1. Modules (@Module)
 
-# e2e tests
-$ pnpm run test:e2e
+- โมดูลเป็นหน่วยหลักของโปรเจกต์
+- รวบรวม controller, service และ provider
+- ทุกโปรเจกต์ต้องมี AppModule เป็นโมดูลหลัก
+- สามารถแบ่งเป็น Feature Modules เพื่อแยกส่วนการทำงานให้เป็นระเบียบ
 
-# test coverage
-$ pnpm run test:cov
+```typescript
+@Module({
+  imports: [UsersModule, AuthModule],
+  controllers: [AppController],
+  providers: [AppService],
+  exports: [AppService],
+})
+export class AppModule {}
 ```
 
-## Deployment
+### 2. Controllers (@Controller)
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+- จัดการรับ request และส่ง response
+- กำหนดเส้นทาง API (route) เช่น @Get(), @Post()
+- ใช้ @Param(), @Query(), @Body() เพื่อรับข้อมูลจาก request
+- สามารถใช้ @HttpCode() เพื่อกำหนด status code
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
+```typescript
+@Controller('posts')
+export class PostsController {
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.postsService.findOne(+id);
+  }
+  
+  @Post()
+  @HttpCode(201)
+  create(@Body() createPostDto: CreatePostDto) {
+    return this.postsService.create(createPostDto);
+  }
+}
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### 3. Services / Providers (@Injectable)
 
-## Resources
+- เขียน business logic หรือฟังก์ชันการทำงาน
+- NestJS ใช้ Dependency Injection ในการจัดการ
+- ควรแยก business logic ออกจาก controllers เสมอ
 
-Check out a few resources that may come in handy when working with NestJS:
+```typescript
+@Injectable()
+export class PostsService {
+  private readonly posts = [];
+  
+  create(createPostDto: CreatePostDto) {
+    this.posts.push(createPostDto);
+    return createPostDto;
+  }
+  
+  findAll() {
+    return this.posts;
+  }
+}
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### 4. Dependency Injection (DI)
 
-## Support
+- ระบบจัดการการสร้างและส่งมอบ instance ของ class อัตโนมัติ
+- ใช้ constructor injection เช่น
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```typescript
+constructor(private readonly userService: UserService) {}
+```
 
-## Stay in touch
+- ช่วยให้การทดสอบทำได้ง่ายผ่านการ mock dependencies
+- สามารถใช้ @Optional() สำหรับ dependency ที่ไม่จำเป็น
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### 5. Middleware
+
+- ทำงานก่อนถึง controller
+- ใช้สำหรับ logging, authentication, หรือแก้ไข request/response
+- สามารถใช้เป็น class หรือ function middleware
+
+```typescript
+@Injectable()
+export class LoggerMiddleware implements NestMiddleware {
+  use(req: Request, res: Response, next: NextFunction) {
+    console.log('Request...');
+    next();
+  }
+}
+```
+
+### 6. Pipes
+
+- ใช้แปลงหรือ validate ข้อมูลที่รับเข้ามา
+- เช่น ใช้ร่วมกับ class-validator เพื่อเช็คข้อมูล request
+- Pipes ที่มีให้ใช้แล้ว: ValidationPipe, ParseIntPipe, ParseBoolPipe
+- สามารถสร้าง Custom Pipes ได้
+
+```typescript
+// DTO with validation
+export class CreateUserDto {
+  @IsString()
+  @MinLength(3)
+  @MaxLength(20)
+  username: string;
+  
+  @IsEmail()
+  email: string;
+}
+
+// Using ValidationPipe
+@Post()
+create(@Body(new ValidationPipe()) createUserDto: CreateUserDto) {
+  return this.usersService.create(createUserDto);
+}
+```
+
+### 7. Guards
+
+- ใช้ควบคุมการเข้าถึง route (authorization)
+- เช่น ตรวจสอบ token หรือสิทธิ์ผู้ใช้
+- ทำงานหลังจาก middleware แต่ก่อน interceptor และ pipe
+
+```typescript
+@Injectable()
+export class AuthGuard implements CanActivate {
+  canActivate(context: ExecutionContext): boolean | Promise<boolean> {
+    const request = context.switchToHttp().getRequest();
+    return this.validateRequest(request);
+  }
+  
+  private validateRequest(request: any) {
+    // ตรวจสอบ token หรือสิทธิ์
+    return true;
+  }
+}
+
+// การใช้งาน Guard
+@UseGuards(AuthGuard)
+@Get('profile')
+getProfile() {
+  return { message: 'This is protected route' };
+}
+```
+
+### 8. Exception Filters
+
+- จัดการ error ที่เกิดขึ้นและส่ง response ที่เหมาะสม
+- NestJS มี built-in exception layer จัดการ HTTP exceptions
+- สามารถสร้าง custom exception filters ได้
+
+```typescript
+// สร้าง custom exception
+export class CustomException extends HttpException {
+  constructor() {
+    super('This is a custom exception', HttpStatus.BAD_REQUEST);
+  }
+}
+
+// สร้าง filter
+@Catch(CustomException)
+export class CustomExceptionFilter implements ExceptionFilter {
+  catch(exception: CustomException, host: ArgumentsHost) {
+    const ctx = host.switchToHttp();
+    const response = ctx.getResponse();
+    const status = exception.getStatus();
+    
+    response.status(status).json({
+      statusCode: status,
+      message: exception.message,
+      timestamp: new Date().toISOString(),
+    });
+  }
+}
+```
+
+### 9. Interceptors
+
+- ดักจับและแปลง request/response
+- เช่น logging, transforming response, error handling, caching
+- ใช้ RxJS operators เพื่อจัดการกับ response stream
+
+```typescript
+@Injectable()
+export class TransformInterceptor implements NestInterceptor {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    return next.handle().pipe(
+      map(data => {
+        return { data, timestamp: new Date().toISOString() };
+      }),
+    );
+  }
+}
+
+// การใช้งาน
+@UseInterceptors(TransformInterceptor)
+@Get()
+findAll() {
+  return this.service.findAll();
+}
+```
+
+### 10. Lifecycle Hooks
+
+- เช่น OnModuleInit, OnApplicationBootstrap เพื่อจัดการ logic ก่อน/หลัง module หรือแอปทำงาน
+- ลำดับการทำงาน: OnModuleInit -> OnApplicationBootstrap -> OnModuleDestroy -> BeforeApplicationShutdown -> OnApplicationShutdown
+
+```typescript
+@Injectable()
+export class AppService implements OnModuleInit, OnApplicationBootstrap {
+  onModuleInit() {
+    console.log('Module has been initialized!');
+  }
+  
+  onApplicationBootstrap() {
+    console.log('Application has been bootstrapped!');
+  }
+}
+```
+
+### 11. ConfigModule และ Environment Variables
+
+- ใช้จัดการการตั้งค่าโปรเจกต์และอ่านค่า .env
+- ติดตั้งผ่าน @nestjs/config
+- ช่วยในการจัดการค่า configuration ตาม environment
+
+```typescript
+// ติดตั้ง ConfigModule
+import { ConfigModule } from '@nestjs/config';
+
+@Module({
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: `.env.${process.env.NODE_ENV}`,
+    }),
+  ],
+})
+export class AppModule {}
+
+// การใช้งาน
+@Injectable()
+export class AppService {
+  constructor(private configService: ConfigService) {}
+  
+  getDbConfig() {
+    const dbUser = this.configService.get<string>('DATABASE_USER');
+    return { dbUser };
+  }
+}
+```
+
+### 12. Testing
+
+- NestJS มีเครื่องมือสำหรับเขียน unit test และ e2e test
+- ใช้ Jest เป็น test runner หลัก
+- มี TestingModule สำหรับสร้าง test module
+
+```typescript
+describe('CatsController', () => {
+  let controller: CatsController;
+  let service: CatsService;
+
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      controllers: [CatsController],
+      providers: [CatsService],
+    }).compile();
+
+    controller = module.get<CatsController>(CatsController);
+    service = module.get<CatsService>(CatsService);
+  });
+
+  it('should be defined', () => {
+    expect(controller).toBeDefined();
+  });
+});
+```
+
+### 13. Validation และ Serialization
+
+- ใช้ class-validator และ class-transformer สำหรับ validate และแปลงข้อมูล
+- ช่วยป้องกัน invalid data และแปลง response ตามที่ต้องการ
+
+```typescript
+export class CreateUserDto {
+  @IsString()
+  @MinLength(2)
+  name: string;
+  
+  @IsEmail()
+  email: string;
+  
+  @IsOptional()
+  @IsString()
+  bio?: string;
+}
+```
+
+### 14. Database Integration
+
+- รองรับ ORM หลายตัว เช่น TypeORM, Sequelize, Mongoose, Prisma
+- สามารถทำ database migrations เพื่อควบคุมการเปลี่ยนแปลง schema
+
+```typescript
+// TypeORM Entity
+@Entity()
+export class User {
+  @PrimaryGeneratedColumn()
+  id: number;
+  
+  @Column()
+  name: string;
+  
+  @Column({ unique: true })
+  email: string;
+  
+  @OneToMany(() => Post, post => post.author)
+  posts: Post[];
+}
+```
+
+### 15. Microservices
+
+- รองรับหลาย transport layer เช่น Redis, MQTT, RabbitMQ, gRPC, Kafka
+- สามารถแยกเป็น microservices ที่สื่อสารกันผ่าน message pattern
+
+```typescript
+// main.ts ของ microservice
+const app = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
+  transport: Transport.TCP,
+  options: {
+    host: 'localhost',
+    port: 8877,
+  },
+});
+```
+
+### 16. WebSockets
+
+- รองรับ real-time communications ผ่าน @nestjs/websockets
+- ใช้ decorators เช่น @WebSocketGateway, @SubscribeMessage
+
+```typescript
+@WebSocketGateway()
+export class ChatGateway implements OnGatewayConnection {
+  @WebSocketServer()
+  server: Server;
+  
+  handleConnection(client: Socket) {
+    console.log(`Client connected: ${client.id}`);
+  }
+  
+  @SubscribeMessage('message')
+  handleMessage(client: Socket, payload: any): void {
+    this.server.emit('newMessage', payload);
+  }
+}
+```
+
+## เรียนรู้เพิ่มเติม
+
+- [NestJS Documentation](https://docs.nestjs.com/) - เอกสารอย่างเป็นทางการ
+- [NestJS Tutorial Video Courses](https://courses.nestjs.com/) - คอร์สเรียนวิดีโอจากทีม NestJS
+- [Discord Community](https://discord.gg/nestjs) - ชุมชนนักพัฒนา NestJS
+- [NestJS GitHub Repository](https://github.com/nestjs/nest) - Source code และ examples
+- [Awesome NestJS](https://github.com/juliandavidmr/awesome-nestjs) - รวมบทความ, libraries, และทรัพยากรเกี่ยวกับ NestJS
+- [NestJS Recipes](https://github.com/nestjs/nest/tree/master/sample) - ตัวอย่างโค้ดสำหรับการใช้งานในรูปแบบต่างๆ
+
+## โครงสร้างโปรเจกต์ที่แนะนำ
+
+```
+src/
+├── common/                 # โค้ดที่ใช้ร่วมกันทั้งแอป
+│   ├── decorators/        # Custom decorators
+│   ├── filters/           # Exception filters
+│   ├── guards/            # Authentication guards 
+│   ├── interceptors/      # Global interceptors
+│   ├── middleware/        # Middleware functions
+│   └── pipes/             # Custom validation pipes
+├── config/                # ไฟล์ config ต่างๆ
+├── modules/
+│   ├── auth/              # Authentication module
+│   ├── posts/             # Posts feature module
+│   │   ├── dto/          # Data Transfer Objects
+│   │   ├── entities/     # Database entities
+│   │   ├── posts.controller.ts
+│   │   ├── posts.service.ts
+│   │   └── posts.module.ts
+│   └── users/             # Users feature module
+├── app.module.ts          # Root module
+└── main.ts               # Entry point
+```
+
+## ตัวอย่าง API Endpoints
+
+| Method | Endpoint             | Description           | Access        |
+|--------|----------------------|-----------------------|---------------|
+| POST   | /auth/register       | สมัครสมาชิกใหม่          | Public        |
+| POST   | /auth/login          | เข้าสู่ระบบ              | Public        |
+| GET    | /posts               | ดึงรายการบทความทั้งหมด    | Public        |
+| GET    | /posts/:id           | ดึงบทความตาม ID        | Public        |
+| POST   | /posts               | สร้างบทความใหม่         | Authenticated |
+| PATCH  | /posts/:id           | แก้ไขบทความ            | Owner         |
+| DELETE | /posts/:id           | ลบบทความ              | Owner/Admin   |
+| GET    | /users/profile       | ดึงข้อมูลผู้ใช้          | Authenticated |
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+MIT Licensed.
