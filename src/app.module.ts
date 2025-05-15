@@ -1,6 +1,5 @@
 import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { JwtStrategy } from './auth/jwt.strategy';
@@ -18,7 +17,7 @@ import { LoggerMiddleware } from './logger/logger.middleware';
     PassportModule, // เรียกใช้ PassportModule
   ],
   controllers: [AppController], // เรียกใช้ AppController
-  providers: [AppService, JwtStrategy], // เรียกใช้ AppService และ JwtStrategy
+  providers: [JwtStrategy], // เรียกใช้ AppService และ JwtStrategy
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
